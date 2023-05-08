@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject restartPanel, playGamePanel;
 
     [Header("Public Variable")]
-    public GroundSpawner groundSpawner;
+    public GroundAndCoinSpawner groundAndCoinSpawner;
     public static bool isDead = true;
     public float hizlanmaZorlugu;
 
@@ -82,16 +82,23 @@ public class PlayerController : MonoBehaviour
         speed += Time.deltaTime * hizlanmaZorlugu;
         transform.position += hareket; //hareket değerini sürekli pozisyonuma ekle
 
-        score += artisMiktari * speed * Time.deltaTime;
         scoreText.text = "Score: "+ ((int) score).ToString();
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Zemin"))
+        if (collision.gameObject.CompareTag("Zemin"))
         {
             StartCoroutine(YokEt(collision.gameObject));
-            groundSpawner.ZeminOlustur();
+            groundAndCoinSpawner.ZeminOlustur();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Coin"))
+        {
+            CoinCollecting(other);
         }
     }
 
@@ -110,15 +117,18 @@ public class PlayerController : MonoBehaviour
         playGamePanel.SetActive(false);
     }
 
+    void CoinCollecting(Collider other)
+    {
+        score += 5;
+        Destroy(other.gameObject);
+        SpeedIncreaser();
+    }
 
-
-
-
-
-
-
-
-
-
-
+    void SpeedIncreaser()
+    {
+        if(score % 30 == 0)
+        {
+            hizlanmaZorlugu += 0.01f;
+        }
+    }
 }//class

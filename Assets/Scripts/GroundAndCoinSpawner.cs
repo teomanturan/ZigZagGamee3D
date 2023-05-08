@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GroundSpawner : MonoBehaviour
+public class GroundAndCoinSpawner : MonoBehaviour
 {
-    [SerializeField] GameObject sonZemin;
+    [SerializeField] GameObject sonZemin,coin;
 
     private void Start()
     {
@@ -17,7 +17,7 @@ public class GroundSpawner : MonoBehaviour
     {
         Vector3 yon;
 
-        if(Random.Range(0,2) == 0)//0 gelirse x ekseninde zemin koy
+        if (Random.Range(0, 2) == 0)//0 gelirse x ekseninde zemin koy
         {
             yon = Vector3.left;
         }
@@ -27,5 +27,15 @@ public class GroundSpawner : MonoBehaviour
         }
         sonZemin = Instantiate(sonZemin, sonZemin.transform.position
             + yon, sonZemin.transform.rotation);
+        CoinSpawner();
+    }
+
+    public void CoinSpawner()
+    {
+        if (Random.Range(0, 2) == 0)
+        {
+            Vector3 mekan = new Vector3(sonZemin.transform.position.x, sonZemin.transform.position.y + 1, sonZemin.transform.position.z);
+            Instantiate(coin, mekan, Quaternion.identity);
+        }
     }
 }
