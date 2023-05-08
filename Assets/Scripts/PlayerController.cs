@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Out Component")]
     [SerializeField] float speed;
-    [SerializeField] Text scoreText, bestScoreText;
+    [SerializeField] Text scoreText, bestScoreText,startPanelBestScoreText,restartPanelBestScoreText;
     [SerializeField] GameObject restartPanel, playGamePanel;
 
     [Header("Public Variable")]
@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
         }
 
         bestScore = PlayerPrefs.GetInt("BestScore");
-        bestScoreText.text = "Best: "+ bestScore.ToString();
+        startPanelBestScoreText.text = "Best Score: " + bestScore.ToString();
     }
 
     private void Update()
@@ -42,7 +42,15 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if(Input.GetMouseButtonDown(0))
+        bestScoreText.text = "Best: " + bestScore.ToString();
+        if (bestScore < score)
+        {
+            bestScore = (int)score;
+            PlayerPrefs.SetInt("BestScore", bestScore);
+            bestScoreText.text = "Best: " + bestScore.ToString();
+        }
+
+        if (Input.GetMouseButtonDown(0))
         {
             if(yon.x==0)//z ekseninde hareket ediyor demektir
             {
@@ -57,11 +65,7 @@ public class PlayerController : MonoBehaviour
         if(transform.position.y< 0.1f)
         {
             isDead = true;
-            if(bestScore<score)
-            {
-                bestScore = (int)score;
-                PlayerPrefs.SetInt("BestScore", bestScore);
-            }
+            restartPanelBestScoreText.text = "Best Score: " + bestScore.ToString();
             restartPanel.SetActive(true);
             Destroy(this.gameObject, 3f);
         }
