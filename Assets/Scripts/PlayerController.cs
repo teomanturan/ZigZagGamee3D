@@ -9,12 +9,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] Text scoreText, bestScoreText,startPanelBestScoreText,restartPanelBestScoreText;
     [SerializeField] GameObject restartPanel, playGamePanel;
+    [SerializeField] Animator panelAnim;
 
     [Header("Public Variable")]
     public GroundAndCoinSpawner groundAndCoinSpawner;
     public static bool isDead = true;
     public float hizlanmaZorlugu;
-
+    bool beatHighScore;
     Vector3 yon = Vector3.left;
     int bestScore = 0;
     float score = 0f;
@@ -69,6 +70,7 @@ public class PlayerController : MonoBehaviour
             restartPanel.SetActive(true);
             Destroy(this.gameObject, 3f);
         }
+        Debug.Log("Hız: " + speed + "katsayı: " + hizlanmaZorlugu);
     }
 
     private void FixedUpdate()
@@ -122,6 +124,11 @@ public class PlayerController : MonoBehaviour
         score += 5;
         Destroy(other.gameObject);
         SpeedIncreaser();
+        if(PlayerPrefs.GetInt("BestScore") < score && !beatHighScore)
+        {
+            beatHighScore = true;
+            panelAnim.SetTrigger("HighScore");
+        }
     }
 
     void SpeedIncreaser()

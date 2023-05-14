@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GroundAndCoinSpawner : MonoBehaviour
 {
-    [SerializeField] GameObject sonZemin,coin;
+    [SerializeField] GameObject sonZemin,coin,cylinder;
 
     private void Start()
     {
